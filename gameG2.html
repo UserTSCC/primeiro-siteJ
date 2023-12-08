@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo: Guerreiro</title>
+</head>
+
+
+<body>
+    <script>
+        let AcabouBatalha = false;
+        let AtaqueJ = 10;
+        let VidaJ = 100;
+        let VidaJBatalha = 100;
+        let DefesaJ = 0;
+
+        let PA = 0;
+
+        let AtaqueGoblin = 10;
+        let VidaGoblinMax = 40;
+        let VidaGoblinBatalha = 40;
+        let GoblinCritico = false
+    </script>
+
+    <div id="explicacao">
+        <h1>Bem-vindo ao meu jogo de RPG! Você escolheu a classe de guerreiro.</h1>
+        <hr>
+        <p>
+            Você está enfrentando um Goblin! Seus atributos iniciais são:
+            <br>
+            - Ataque: <span id="ataqueJogador">10</span>
+            <br>
+            - Vida: <span id="vidaJogador">100</span>
+            <br>
+            - Defesa: <span id="defesaJogador">0</span>
+            <br>
+            - PA: <span id="pa">0</span>
+        </p>
+
+        <button onclick="iniciarCombate()" id="explicaoFim" style="border-radius: 5px;">Iniciar Combate</button>
+        <button onclick="aumentarAtaque()" style="border-radius: 5px;">Aumentar Ataque (1 PA)</button>
+        <button onclick="aumentarVida()" style="border-radius: 5px;">Aumentar Vida (1 PA)</button>
+        <button onclick="aumentarDefesa()" style="border-radius: 5px;">Aumentar Defesa (1 PA)</button>
+    </div>
+
+    <div id="resultadoCombate">
+        <p>
+            <hr>
+            <h2>BATALHA</h2>
+            <br>
+            <label id="displayDanoJ"></label>
+            <br>
+            <label id="displayDanoG"></label>
+        </p>
+    </div>
+
+    <script>
+        function iniciarCombate() {
+            //Chance de crítico do goblin
+            let chance = aleatorio()
+            if (chance >= 6) {
+                GoblinCritico = true
+                AtaqueGoblin = AtaqueGoblin * 2
+                alert("Goblin ativa dano crítico! Ataque do Goblin dobra nesta rodada.")
+            }
+
+            // Simulação de um turno de combate
+            const danoRecebido = calcularDano(AtaqueGoblin, DefesaJ);
+            VidaJBatalha -= danoRecebido;
+            VidaGoblinBatalha -= AtaqueJ;
+            if (GoblinCritico == true) {
+                AtaqueGoblin = AtaqueGoblin / 2
+                GoblinCritico = false
+            }
+            // Atualiza os elementos da página com os novos valores
+            document.getElementById("vidaJogador").innerText = VidaJBatalha;
+
+            // Verifica o resultado do combate
+            if (VidaGoblinBatalha <= 0) {
+                document.getElementById("displayDanoG").innerText = "Você derrotou o Goblin! Você recebeu 1 PA e sua vida foi regenerada.";
+                AcabouBatalha = true;
+                VidaJBatalha = VidaJ;
+                VidaGoblinBatalha = VidaGoblinMax
+                PA += 1;
+                document.getElementById("pa").innerText = PA;
+                // document.getElementById("explicaoFim").disabled = true; // Desativa o botão após a batalha
+                document.getElementById("vidaJogador").innerText = VidaJBatalha;
+            } else if (VidaJBatalha <= 0) {
+                document.getElementById("displayDanoJ").innerText = "Você foi derrotado pelo Goblin! Reiniciando...";
+                VidaGoblinBatalha = VidaGoblinMax;
+                VidaJBatalha = VidaJ;
+            } else {
+                document.getElementById("displayDanoJ").innerText = `Você recebeu ${danoRecebido} de dano do Goblin. Vida do jogador: ${VidaJBatalha}`;
+                // Verifica se o Goblin ainda está vivo antes de atualizar o texto
+                if (VidaGoblinBatalha > 0) {
+                    document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano. Vida do Goblin: ${VidaGoblinBatalha}`;
+                }
+            }
+        }
+
+        function calcularDano(ataque, defesa) {
+            // Simples cálculo de dano (pode ser ajustado conforme necessário)
+            return Math.max(ataque - defesa, 0);
+        }
+
+        function aumentarAtaque() {
+            if (PA > 0) {
+                AtaqueJ += 5; // Aumenta o ataque em 5 (ajuste conforme necessário)
+                PA--;
+                atualizarAtributos();
+            } else {
+                alert("Você não tem pontos de atributo suficientes.");
+            }
+        }
+
+        function aumentarVida() {
+            if (PA > 0) {
+                VidaJ += 10; // Aumenta a vida em 10 (ajuste conforme necessário)
+                PA--;
+                atualizarAtributos();
+            } else {
+                alert("Você não tem pontos de atributo suficientes.");
+            }
+        }
+
+        function aumentarDefesa() {
+            if (PA > 0) {
+                DefesaJ += 2; // Aumenta a defesa em 2 (ajuste conforme necessário)
+                PA--;
+                atualizarAtributos();
+            } else {
+                alert("Você não tem pontos de atributo suficientes.");
+            }
+        }
+
+        function atualizarAtributos() {
+            document.getElementById("ataqueJogador").innerText = AtaqueJ;
+            document.getElementById("vidaJogador").innerText = VidaJ;
+            document.getElementById("defesaJogador").innerText = DefesaJ;
+            document.getElementById("pa").innerText = PA;
+        }
+
+        function aleatorio(){
+            let r = Math.floor(Math.random() * 10) + 1;
+            return r;
+        }
+    </script>
+</body>
+</html>
+
+

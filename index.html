@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My first website!</title>
+</head>
+<body>
+    <h1>This is a game!</h1>
+    <hr>
+
+    <form onsubmit="return nome()">
+        <label for="nomeJ">Nome do jogador:</label>
+        <input type="text" id="nomeJ" placeholder="Jogador">
+        <label id="nomeFim"></label>
+
+        <script>
+            function nome() {
+                const nome = document.getElementById("nomeJ").value;
+                document.getElementById("nomeFim").innerHTML = "Olá, " + nome + ", tudo bem? Este é um jogo simples de rpg feito em HTML, espero que aproveite! Obs: apenas a classe de guerreiro está funcionando";
+
+                // Retorna false para evitar o envio padrão do formulário
+                return false;
+            }
+        </script>
+    </form>
+
+    <br>
+    <br>
+    <h4>Para iniciar, escolha uma classe:</h4>
+    <a href="gameG.html">
+        <img src="/imagens/guerreiroIcone.jpg" width="200" height="200" title="Guerreiro">
+    </a>
+    <img src="/imagens/magoIcone.jpg" widht="200" height="200" title="Mago">
+    <hr>
+    <img src="/imagens/LadinoIcone.jpg" width="200" height="200" title="Ladino">
+    <img src="/imagens/arqueiroIcone.jpg" width="200" height="200" title="Arqueiro">
+
+</body>
+</html>
