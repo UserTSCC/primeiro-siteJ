@@ -89,14 +89,14 @@
     <script>
         function atacar() {
             // Anúncio antes da batalha
-            document.getElementById("ANUNCIO").innerText = "Prepare-se para a batalha!\nComeça em 5 segundos!";
+            document.getElementById("ANUNCIO").innerText = "Turno vai começar!\n3 segundos!";
             
             //Chance de crítico do goblin
             let chance = aleatorio()
                 if (chance >= 7) {
                     GoblinCritico = true
                     AtaqueGoblin = AtaqueGoblin * 2
-                    document.getElementById("ANUNCIO").innerHTML = "Goblin ativa dano crítico!\nAtaque do Goblin dobra nesta rodada."
+                    document.getElementById("ANUNCIO").innerHTML = "Goblin: dano crítico!\nAtaque do Goblin x2."
                 }
 
             // Aguarda 5 segundos antes de continuar
@@ -137,7 +137,7 @@
                         document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano.\n Vida: ${VidaGoblinBatalha}/${VidaGoblinMax}`;
                     }
                 }
-            }, 5000); // Aguarda 5 segundos
+            }, 3000); // Aguarda 5 segundos
         }
 
         function calcularDano(ataque, defesa) {
