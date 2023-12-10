@@ -54,7 +54,7 @@
             - PA: <span id="pa">0</span>
         </p>
 
-        <button onclick="atacar()" id="explicaoFim" style="border-radius: 5px;">Atacar</button>
+        <button onclick="atacar()" id="atacar" style="border-radius: 5px;">Atacar</button>
         <button onclick="aumentarAtaque()" style="border-radius: 5px;">Aumentar Ataque (1 PA)</button>
         <button onclick="aumentarVida()" style="border-radius: 5px;">Aumentar Vida (1 PA)</button>
         <button onclick="aumentarDefesa()" style="border-radius: 5px;">Aumentar Defesa (1 PA)</button>
@@ -88,6 +88,9 @@
 
     <script>
         function atacar() {
+            var BotaoAtaque = document.getElementById("atacar")
+            BotaoAtaque.disabled = true;
+
             // Anúncio antes da batalha
             document.getElementById("ANUNCIO").innerText = "Turno vai começar!\n3 segundos!";
             
@@ -99,7 +102,7 @@
                     document.getElementById("ANUNCIO").innerHTML = "Goblin: dano crítico!\nAtaque do Goblin x2."
                 }
 
-            // Aguarda 5 segundos antes de continuar
+            // Aguarda 3 segundos antes de continuar
             setTimeout(function () {
                 // Limpa o anúncio
                 document.getElementById("ANUNCIO").innerText = "";
@@ -117,16 +120,17 @@
 
                 // Verifica o resultado do combate
                 if (VidaGoblinBatalha <= 0) {
-                    document.getElementById("displayDanoG").innerText = "Você derrotou o Goblin!\nVocê recebeu 1 PA e sua vida foi regenerada.";
+                    document.getElementById("ANUNCIO").innerText = `Você derrotou o Goblin!\nVocê recebeu 1 PA e sua vida foi regenerada.`;
                     AcabouBatalha = true;
                     VidaJBatalha = VidaJ;
                     VidaGoblinBatalha = VidaGoblinMax
                     PA += 1;
                     document.getElementById("pa").innerText = PA;
-                    document.getElementById("ANUNCIO").innerText = ""; // Limpa o anúncio
                     document.getElementById("vidaJogador").innerText = VidaJBatalha;
+                    document.getElementById("displayDanoJ").innerText = "";
+                    document.getElementById("displayDanoG").innerText = "";
                 } else if (VidaJBatalha <= 0) {
-                    document.getElementById("displayDanoJ").innerText = "Você foi derrotado pelo Goblin!\nReiniciando...";
+                    document.getElementById("ANUNCIO").innerText = "Você foi derrotado pelo Goblin!\nReiniciando...";
                     VidaGoblinBatalha = VidaGoblinMax;
                     VidaJBatalha = VidaJ;
                     document.getElementById("ANUNCIO").innerText = ""; // Limpa o anúncio
@@ -137,7 +141,9 @@
                         document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano.\n Vida: ${VidaGoblinBatalha}/${VidaGoblinMax}`;
                     }
                 }
-            }, 3000); // Aguarda 5 segundos
+
+                BotaoAtaque.disabled = false;
+            }, 3000); // Aguarda 3 segundos
         }
 
         function calcularDano(ataque, defesa) {
