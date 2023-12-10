@@ -4,10 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo: Guerreiro</title>
+
+    <style>
+        #resultadoCombate {
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .container-imagem-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+    </style>
 </head>
 
 
 <body>
+    <!-- Variáveis -->
     <script>
         let AcabouBatalha = false;
         let AtaqueJ = 10;
@@ -20,7 +36,7 @@
         let AtaqueGoblin = 10;
         let VidaGoblinMax = 40;
         let VidaGoblinBatalha = 40;
-        let GoblinCritico = false
+        let GoblinCritico = false;
     </script>
 
     <div id="explicacao">
@@ -38,65 +54,90 @@
             - PA: <span id="pa">0</span>
         </p>
 
-        <button onclick="iniciarCombate()" id="explicaoFim" style="border-radius: 5px;">Iniciar Combate</button>
+        <button onclick="atacar()" id="explicaoFim" style="border-radius: 5px;">Atacar</button>
         <button onclick="aumentarAtaque()" style="border-radius: 5px;">Aumentar Ataque (1 PA)</button>
         <button onclick="aumentarVida()" style="border-radius: 5px;">Aumentar Vida (1 PA)</button>
         <button onclick="aumentarDefesa()" style="border-radius: 5px;">Aumentar Defesa (1 PA)</button>
     </div>
 
+    <br>
+    <hr>
+    <h2 style="text-align: center;">BATALHA</h2>
+    <br>
+
     <div id="resultadoCombate">
         <p>
-            <hr>
-            <h2>BATALHA</h2>
-            <br>
-            <label id="displayDanoJ"></label>
-            <br>
-            <label id="displayDanoG"></label>
+            <!-- Guerreiro -->
+            <div class="container-imagem-label">
+                <img src="imagens/guerreiroIcone.jpg" alt="Guerreiro" style="border-radius: 10px;" width="200" height="200">
+                <label id="displayDanoJ">Dano do Jogador</label>
+            </div>
+
+            <!-- ANUNCIO -->
+            <div class="container-imagem-label">
+                <label id="ANUNCIO"></label>
+            </div>
+
+            <!-- Goblin -->
+            <div class="container-imagem-label">
+                <img src="imagens/goblinIcone.png" alt="Goblin" style="border-radius: 10px;" width="200" height="200">
+                <label id="displayDanoG">Dano do Goblin</label>
+            </div>
         </p>
     </div>
 
     <script>
-        function iniciarCombate() {
+        function atacar() {
+            // Anúncio antes da batalha
+            document.getElementById("ANUNCIO").innerText = "Prepare-se para a batalha!\nComeça em 5 segundos!";
+            
             //Chance de crítico do goblin
             let chance = aleatorio()
-            if (chance >= 6) {
-                GoblinCritico = true
-                AtaqueGoblin = AtaqueGoblin * 2
-                alert("Goblin ativa dano crítico! Ataque do Goblin dobra nesta rodada.")
-            }
-
-            // Simulação de um turno de combate
-            const danoRecebido = calcularDano(AtaqueGoblin, DefesaJ);
-            VidaJBatalha -= danoRecebido;
-            VidaGoblinBatalha -= AtaqueJ;
-            if (GoblinCritico == true) {
-                AtaqueGoblin = AtaqueGoblin / 2
-                GoblinCritico = false
-            }
-            // Atualiza os elementos da página com os novos valores
-            document.getElementById("vidaJogador").innerText = VidaJBatalha;
-
-            // Verifica o resultado do combate
-            if (VidaGoblinBatalha <= 0) {
-                document.getElementById("displayDanoG").innerText = "Você derrotou o Goblin! Você recebeu 1 PA e sua vida foi regenerada.";
-                AcabouBatalha = true;
-                VidaJBatalha = VidaJ;
-                VidaGoblinBatalha = VidaGoblinMax
-                PA += 1;
-                document.getElementById("pa").innerText = PA;
-                // document.getElementById("explicaoFim").disabled = true; // Desativa o botão após a batalha
-                document.getElementById("vidaJogador").innerText = VidaJBatalha;
-            } else if (VidaJBatalha <= 0) {
-                document.getElementById("displayDanoJ").innerText = "Você foi derrotado pelo Goblin! Reiniciando...";
-                VidaGoblinBatalha = VidaGoblinMax;
-                VidaJBatalha = VidaJ;
-            } else {
-                document.getElementById("displayDanoJ").innerText = `Você recebeu ${danoRecebido} de dano do Goblin. Vida do jogador: ${VidaJBatalha}`;
-                // Verifica se o Goblin ainda está vivo antes de atualizar o texto
-                if (VidaGoblinBatalha > 0) {
-                    document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano. Vida do Goblin: ${VidaGoblinBatalha}`;
+                if (chance >= 7) {
+                    GoblinCritico = true
+                    AtaqueGoblin = AtaqueGoblin * 2
+                    document.getElementById("ANUNCIO").innerHTML = "Goblin ativa dano crítico!\nAtaque do Goblin dobra nesta rodada."
                 }
-            }
+
+            // Aguarda 5 segundos antes de continuar
+            setTimeout(function () {
+                // Limpa o anúncio
+                document.getElementById("ANUNCIO").innerText = "";
+
+                // Simulação de um turno de combate
+                const danoRecebido = calcularDano(AtaqueGoblin, DefesaJ);
+                VidaJBatalha -= danoRecebido;
+                VidaGoblinBatalha -= AtaqueJ;
+                if (GoblinCritico == true) {
+                    AtaqueGoblin = AtaqueGoblin / 2
+                    GoblinCritico = false
+                }
+                // Atualiza os elementos da página com os novos valores
+                document.getElementById("vidaJogador").innerText = VidaJBatalha;
+
+                // Verifica o resultado do combate
+                if (VidaGoblinBatalha <= 0) {
+                    document.getElementById("displayDanoG").innerText = "Você derrotou o Goblin!\nVocê recebeu 1 PA e sua vida foi regenerada.";
+                    AcabouBatalha = true;
+                    VidaJBatalha = VidaJ;
+                    VidaGoblinBatalha = VidaGoblinMax
+                    PA += 1;
+                    document.getElementById("pa").innerText = PA;
+                    document.getElementById("ANUNCIO").innerText = ""; // Limpa o anúncio
+                    document.getElementById("vidaJogador").innerText = VidaJBatalha;
+                } else if (VidaJBatalha <= 0) {
+                    document.getElementById("displayDanoJ").innerText = "Você foi derrotado pelo Goblin!\nReiniciando...";
+                    VidaGoblinBatalha = VidaGoblinMax;
+                    VidaJBatalha = VidaJ;
+                    document.getElementById("ANUNCIO").innerText = ""; // Limpa o anúncio
+                } else {
+                    document.getElementById("displayDanoJ").innerText = `Você recebeu ${danoRecebido} de dano do Goblin.\n Vida: ${VidaJBatalha}/${VidaJ}`;
+                    // Verifica se o Goblin ainda está vivo antes de atualizar o texto
+                    if (VidaGoblinBatalha > 0) {
+                        document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano.\n Vida: ${VidaGoblinBatalha}/${VidaGoblinMax}`;
+                    }
+                }
+            }, 5000); // Aguarda 5 segundos
         }
 
         function calcularDano(ataque, defesa) {
@@ -141,12 +182,10 @@
             document.getElementById("pa").innerText = PA;
         }
 
-        function aleatorio(){
+        function aleatorio() {
             let r = Math.floor(Math.random() * 10) + 1;
             return r;
         }
     </script>
 </body>
 </html>
-
-
