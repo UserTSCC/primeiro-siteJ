@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo: Mago</title>
+
+    <style>
+        #resultadoCombate {
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #explicacao {
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .container-imagem-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Variáveis -->
+    <script>
+        let AcabouBatalha = false;
+        let AtaqueJ = 10;
+        let VidaJ = 75;
+        let VidaJBatalha = 75;
+        let ManaJ = 30;
+        let ManaJBatalha = 30;
+        let Queimadura = false
+
+        let PA = 0;
+
+        let AtaqueGoblin = 10;
+        let VidaGoblinMax = 40;
+        let VidaGoblinBatalha = 40;
+        let GoblinCritico = false;
+    </script>
+
+
+    <!-- Atributos e Botões -->
+    <h1>Bem-vindo ao meu jogo de RPG! Você escolheu a classe de mago.</h1>
+    <br>
+    <hr>
+    <div id="explicacao">
+        <div class="container-imagem-label">
+            <h3>ATRIBUTOS</h3>
+            <label>
+                - Ataque: <span id="ataqueJogador">10</span>
+                <br>
+                - Vida: <span id="vidaJogador">75</span>
+                <br>
+                - Mana: <span id="manaJogador">30</span>
+                <br>
+                - PA: <span id="pa">0</span>
+            </label>
+        </div>
+
+        <!-- Botões BATALHA -->
+        <div class="container-imagem-label">
+            <h3>HABILIDADES</h3>
+            <button onclick="golpear()" id="golpear" style="border-radius: 5px;">Golpear</button>
+            <button onclick="bolaFogo()" id="bolaFogo" style="border-radius: 5px;">Bola de Fogo (10 MANA)</button>
+        </div>
+
+        <!-- Botões ATRIBUTOS -->
+        <div class="container-imagem-label">
+            <h3>AUMENTAR STATUS</h3>
+            <button onclick="aumentarAtaque()" style="border-radius: 5px;">Aumentar Ataque (1 PA)</button>
+            <button onclick="aumentarVida()" style="border-radius: 5px;">Aumentar Vida (1 PA)</button>
+            <button onclick="aumentarMana()" style="border-radius: 5px;">Aumentar Mana (1 PA)</button>
+        </div>
+    </div>
+
+    <br>
+    <hr>
+    <h2 style="text-align: center;">BATALHA</h2>
+    <br>
+
+
+    <!-- Interface BATALHA -->
+    <div id="resultadoCombate">
+        <p>
+            <!-- Mago -->
+            <div class="container-imagem-label">
+                <img src="imagens/magoIcone.jpg" alt="Mago" style="border-radius: 10px;" width="200" height="200">
+                <label id="displayDanoJ">Dano do Jogador</label>
+            </div>
+
+            <!-- ANUNCIO -->
+            <div class="container-imagem-label">
+                <label id="ANUNCIO"></label>
+                <label id="ANUNCIO2"></label>
+            </div>
+
+            <!-- Goblin -->
+            <div class="container-imagem-label">
+                <img src="imagens/goblinIcone.png" alt="Goblin" style="border-radius: 10px;" width="200" height="200">
+                <label id="displayDanoG">Dano do Goblin</label>
+            </div>
+        </p>
+    </div>
+
+
+    <!-- Funções Gerais -->
+    <script>
+        //Funções BATALHA
+        function golpear() {
+            var BotaoFogo = document.getElementById("bolaFogo")
+            BotaoFogo.disabled = true
+            var BotaoGolpear = document.getElementById("golpear")
+            BotaoGolpear.disabled = true;
+
+            // Anúncio antes da batalha
+            document.getElementById("ANUNCIO").innerText = "Turno vai começar!\n3 segundos!";
+            
+            //Chance de crítico do goblin
+            let chance = aleatorio()
+                if (chance >= 7) {
+                    GoblinCritico = true
+                    AtaqueGoblin = AtaqueGoblin * 2
+                    document.getElementById("ANUNCIO").innerHTML = "Goblin: dano crítico!\nAtaque do Goblin x2."
+                }
+
+            // Aguarda 3 segundos antes de continuar
+            setTimeout(function () {
+                // Limpa o anúncio
+                document.getElementById("ANUNCIO").innerText = "";
+
+                // Simulação de um turno de combate
+                VidaJBatalha -= AtaqueGoblin;
+                VidaGoblinBatalha -= AtaqueJ;
+                if (GoblinCritico == true) {
+                    AtaqueGoblin = AtaqueGoblin / 2
+                    GoblinCritico = false
+                }
+
+                // Verifica o resultado do combate
+                if (VidaGoblinBatalha <= 0) {
+                    document.getElementById("ANUNCIO").innerText = `Você derrotou o Goblin!\nVocê recebeu 1 PA e sua vida foi regenerada.`;
+                    AcabouBatalha = true;
+                    VidaJBatalha = VidaJ;
+                    VidaGoblinBatalha = VidaGoblinMax
+                    PA += 1;
+                    document.getElementById("pa").innerText = PA;
+                    document.getElementById("vidaJogador").innerText = VidaJBatalha;
+                    document.getElementById("displayDanoJ").innerText = "";
+                    document.getElementById("displayDanoG").innerText = "";
+                } else if (VidaJBatalha <= 0) {
+                    document.getElementById("ANUNCIO").innerText = "Você foi derrotado pelo Goblin!\nReiniciando...";
+                    VidaGoblinBatalha = VidaGoblinMax;
+                    VidaJBatalha = VidaJ;
+                    document.getElementById("ANUNCIO").innerText = ""; // Limpa o anúncio
+                } else {
+                    document.getElementById("displayDanoJ").innerText = `Você recebeu ${AtaqueGoblin} de dano do Goblin.\n Vida: ${VidaJBatalha}/${VidaJ}`;
+                    // Verifica se o Goblin ainda está vivo antes de atualizar o texto
+                    if (VidaGoblinBatalha > 0) {
+                        document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano.\n Vida: ${VidaGoblinBatalha}/${VidaGoblinMax}`;
+                    }
+                }
+
+                BotaoGolpear.disabled = false;
+                BotaoFogo.disabled = false;
+            }, 3000); // Aguarda 3 segundos
+        }
+
+        function bolaFogo() {
+            if (ManaJBatalha >= 10) {
+                ManaJBatalha -= 10
+
+                //Desativa Botões
+                var BotaoFogo = document.getElementById("bolaFogo")
+                BotaoFogo.disabled = true
+                var BotaoGolpear = document.getElementById("golpear")
+                BotaoGolpear.disabled = true;
+
+                // Anúncio antes da batalha
+                document.getElementById("ANUNCIO").innerText = "Turno vai começar!\n3 segundos!";
+
+                //Chance de queimadura
+                let chanceFogo = aleatorio()
+                    if (chanceFogo >=6) {
+                        Queimadura = true
+                        AtaqueJ = AtaqueJ * 2
+                        document.getElementById("ANUNCIO").innerText = "";
+                        document.getElementById("ANUNCIO2").innerHTML = `Bola de fogo inflingiu QUEIMADURA!\nDano inflingido x2\n`
+                    }
+
+                //Chance de crítico do goblin
+                let chance = aleatorio()
+                    if (chance >= 7) {
+                        GoblinCritico = true
+                        AtaqueGoblin = AtaqueGoblin * 2
+                        document.getElementById("ANUNCIO").innerHTML = `Goblin: dano crítico!\nAtaque do Goblin x2.`;
+                    }
+
+                // Aguarda 3 segundos antes de continuar
+                setTimeout(function () {
+                    // Limpa o anúncio
+                    document.getElementById("ANUNCIO").innerHTML = "";
+                    document.getElementById("ANUNCIO2").innerHTML = "";
+
+                    // Simulação de um turno de combate
+                    VidaJBatalha -= AtaqueGoblin;
+                    VidaGoblinBatalha -= AtaqueJ;
+                    if (GoblinCritico == true) {
+                        AtaqueGoblin = AtaqueGoblin / 2
+                        GoblinCritico = false
+                    }
+                    if (Queimadura == true) {
+                        AtaqueJ = AtaqueJ / 2
+                        Queimadura = false
+                    }
+
+                    // Verifica o resultado do combate
+                    if (VidaGoblinBatalha <= 0) {
+                        document.getElementById("ANUNCIO").innerText = `Você derrotou o Goblin!\nVocê recebeu 1 PA e sua vida e mana foram regeneradas.`;
+                        AcabouBatalha = true;
+                        VidaJBatalha = VidaJ;
+                        ManaJBatalha = ManaJ
+                        VidaGoblinBatalha = VidaGoblinMax
+                        PA += 1;
+
+                        document.getElementById("pa").innerText = PA;
+                        document.getElementById("vidaJogador").innerText = VidaJ;
+                        document.getElementById("displayDanoJ").innerText = "";
+                        document.getElementById("displayDanoG").innerText = "";
+                        document.getElementById("manaJogador").innerText = ManaJ;
+                    } else if (VidaJBatalha <= 0) {
+                        document.getElementById("ANUNCIO").innerText = "Você foi derrotado pelo Goblin!\nReiniciando...";
+                        VidaGoblinBatalha = VidaGoblinMax;
+                        VidaJBatalha = VidaJ;
+                        ManaJBatalha = ManaJ
+                    } else {
+                        document.getElementById("displayDanoJ").innerText = `Você recebeu ${AtaqueGoblin} de dano do Goblin.\n Vida: ${VidaJBatalha}/${VidaJ}\n Mana: ${ManaJBatalha}/${ManaJ}`;
+                        // Verifica se o Goblin ainda está vivo antes de atualizar o texto
+                        if (VidaGoblinBatalha > 0) {
+                            document.getElementById("displayDanoG").innerText = `Goblin recebeu ${AtaqueJ} de dano.\n Vida: ${VidaGoblinBatalha}/${VidaGoblinMax}`;
+                        }
+                    }
+
+                    BotaoGolpear.disabled = false;
+                    BotaoFogo.disabled = false;
+                }, 3000); // Aguarda 3 segundos
+            }
+            else {
+                document.getElementById("ANUNCIO2").innerText = `Mana insuficiente!\nBola de fogo requer 10 de mana, mas você tem ${ManaJBatalha}`
+            }
+        }
+
+        //Funções ATRIBUTOS
+        function aumentarAtaque() {
+            if (PA > 0) {
+                AtaqueJ += 5; // Aumenta o ataque em 5 (ajuste conforme necessário)
+                PA--;
+                atualizarAtributos();
+            } else {
+                alert("Você não tem pontos de atributo suficientes.");
+            }
+        }
+
+        function aumentarVida() {
+            if (PA > 0) {
+                VidaJ += 10; // Aumenta a vida em 10 (ajuste conforme necessário)
+                PA--;
+                atualizarAtributos();
+            } else {
+                alert("Você não tem pontos de atributo suficientes.");
+            }
+        }
+
+        function aumentarMana() {
+            if (PA > 0) {
+                ManaJ += 5; // Aumenta a mana em 5 (ajuste conforme necessário)
+                PA--;
+                atualizarAtributos();
+            } else {
+                alert("Você não tem pontos de atributo suficientes.");
+            }
+        }
+
+        function atualizarAtributos() {
+            document.getElementById("ataqueJogador").innerText = AtaqueJ;
+            document.getElementById("vidaJogador").innerText = VidaJ;
+            document.getElementById("manaJogador").innerText = ManaJ;
+            document.getElementById("pa").innerText = PA;
+        }
+
+        function aleatorio() {
+            let r = Math.floor(Math.random() * 10) + 1;
+            return r;
+        }
+    </script>
+</body>
+</html>
