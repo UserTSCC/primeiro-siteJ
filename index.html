@@ -3,15 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My first website!</title>
+    <title>Jogo RPG</title>
+
+    <style>
+       #conteudo {
+        text-align: center;
+            display: flex;
+            justify-content: space-around;
+       }
+
+       .container-imagem-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+    </style>
 </head>
-<body>
-    <h1>This is a game!</h1>
+<body style="background-color: grey;">
+    <h1 style="text-align: center; color: tomato">Jogo RPG!</h1>
     <hr>
 
     <form onsubmit="return nome()">
         <label for="nomeJ">Nome do jogador (enter para confirmar):</label>
-        <input type="text" id="nomeJ" placeholder="Jogador">
+        <input style="background-color: lightgrey;" type="text" id="nomeJ" placeholder="Jogador">
         <br>
         <label id="nomeFim"></label>
 
@@ -28,18 +43,35 @@
 
     <br>
     <br>
-    <h4>Para iniciar, escolha uma classe:</h4>
-    <a href="gameG.html">
-        <img src="imagens/guerreiroIcone.jpg" width="200" height="200" title="Guerreiro" style="border-radius: 10px;">
-    </a>
+    <br>
+    <br>
+    <h4 style="text-align: center;">Para iniciar, escolha uma classe:</h4>
 
-    <a href="gameW.html">
-    <img src="imagens/magoIcone.jpg" widht="200" height="200" title="Mago" style="border-radius: 10px;">
-    </a>
+    <div id="conteudo">
+        <div class="container-imagem-label">
+            <a href="gameG.html">
+                <img src="imagens/guerreiroIcone.jpg" width="200" height="200" title="Guerreiro" style="border-radius: 10px;">
+            </a>
+            <label>GUERREIRO</label>
+        </div>
 
-    <hr>
-    <img src="imagens/LadinoIcone.jpg" width="200" height="200" title="Ladino" style="border-radius: 10px;">
-    <img src="imagens/arqueiroIcone.jpg" width="200" height="200" title="Arqueiro" style="border-radius: 10px;">
+        <div class="container-imagem-label">
+            <a href="gameW.html">
+                <img src="imagens/magoIcone.jpg" widht="200" height="200" title="Mago" style="border-radius: 10px;">
+            </a>
+            <label>MAGO</label>
+        </div>
 
+        <hr>
+
+        <div class="container-imagem-label">
+            <img src="imagens/LadinoIcone.jpg" width="200" height="200" title="Ladino" style="border-radius: 10px;">
+            <label>LADINO</label>
+        </div>
+        <div class="container-imagem-label">
+            <img src="imagens/arqueiroIcone.jpg" width="200" height="200" title="Arqueiro" style="border-radius: 10px;">
+            <label>ARQUEIRO</label>
+        </div>
+    </div>
 </body>
 </html>
