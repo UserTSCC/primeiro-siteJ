@@ -12,6 +12,12 @@
             justify-content: space-around;
         }
 
+        #explicacao {
+            text-align: center;
+            display: flex;
+            justify-content: space-around;
+        }
+
         .container-imagem-label {
             display: flex;
             flex-direction: column;
@@ -39,26 +45,38 @@
         let GoblinCritico = false;
     </script>
 
+    <h1>Bem-vindo ao meu jogo de RPG! Você escolheu a classe de guerreiro.</h1>
+    <br>
+    <hr>
+
     <!-- Atributos e Botões -->
     <div id="explicacao">
-        <h1>Bem-vindo ao meu jogo de RPG! Você escolheu a classe de guerreiro.</h1>
-        <hr>
-        <p>
-            ATRIBUTOS:
-            <br>
-            - Ataque: <span id="ataqueJogador">10</span>
-            <br>
-            - Vida: <span id="vidaJogador">100</span>
-            <br>
-            - Defesa: <span id="defesaJogador">0</span>
-            <br>
-            - PA: <span id="pa">0</span>
-        </p>
+        <div class="container-imagem-label">
+            <h3>ATRIBUTOS</h3>
+            <label>
+                - ATAQUE: <span id="ataqueJogador">10</span>
+                <br>
+                - VIDA: <span id="vidaJogador">100</span>
+                <br>
+                - DEFESA: <span id="defesaJogador">0</span>
+                <br>
+                - PA: <span id="pa">0</span>
+            </label>
+        </div>
 
-        <button onclick="atacar()" id="atacar" style="border-radius: 5px;">Atacar</button>
-        <button onclick="aumentarAtaque()" style="border-radius: 5px;">Aumentar Ataque (1 PA)</button>
-        <button onclick="aumentarVida()" style="border-radius: 5px;">Aumentar Vida (1 PA)</button>
-        <button onclick="aumentarDefesa()" style="border-radius: 5px;">Aumentar Defesa (1 PA)</button>
+        <!-- Botões BATALHA -->
+        <div class="container-imagem-label">
+            <h3>HABILIDADES</h3>
+            <button onclick="atacar()" id="atacar" style="border-radius: 5px;">Atacar</button>
+        </div>
+
+        <!-- Botões ATRIBUTOS -->
+        <div class="container-imagem-label">
+            <h3>AUMENTAR STATUS</h3>
+            <button onclick="aumentarAtaque()" style="border-radius: 5px;">Aumentar Ataque (1 PA)</button>
+            <button onclick="aumentarVida()" style="border-radius: 5px;">Aumentar Vida (1 PA)</button>
+            <button onclick="aumentarDefesa()" style="border-radius: 5px;">Aumentar Defesa (1 PA)</button>
+        </div>
     </div>
 
     <br>
