@@ -6,10 +6,21 @@
     <title>Jogo RPG</title>
 
     <style>
-       #conteudo {
-        text-align: center;
+       body {
+            background-color: grey;
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+       }
+
+       #conteudo {
+            text-align: center;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
        }
 
        .container-imagem-label {
@@ -20,7 +31,9 @@
         }
     </style>
 </head>
-<body style="background-color: grey;">
+
+<body>
+
     <h1 style="text-align: center; color: tomato">Jogo RPG!</h1>
     <hr>
 
@@ -57,17 +70,16 @@
 
         <div class="container-imagem-label">
             <a href="gameW.html">
-                <img src="imagens/magoIcone.jpg" widht="200" height="200" title="Mago" style="border-radius: 10px;">
+                <img src="imagens/magoIcone.jpg" width="200" height="200" title="Mago" style="border-radius: 10px;">
             </a>
             <label>MAGO</label>
         </div>
-
-        <hr>
 
         <div class="container-imagem-label">
             <img src="imagens/LadinoIcone.jpg" width="200" height="200" title="Ladino" style="border-radius: 10px;">
             <label>LADINO</label>
         </div>
+
         <div class="container-imagem-label">
             <img src="imagens/arqueiroIcone.jpg" width="200" height="200" title="Arqueiro" style="border-radius: 10px;">
             <label>ARQUEIRO</label>

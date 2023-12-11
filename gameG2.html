@@ -24,6 +24,18 @@
             align-items: center;
             margin: 10px;
         }
+
+        @keyframes shake {
+            0% {transform: translateX(0); }
+            25% {transform: translateX(-10px) rotate(-5deg); }
+            50% {transform: translateX(10px) rotate(5deg); }
+            75% {transform: translateX(-10px) rotate(-5deg); }
+            100% {transform: translateX(0); }
+        }
+
+        .tremer-ativo {
+            animation: shake 0.5s ease-in-out
+        }
     </style>
 </head>
 
@@ -68,6 +80,7 @@
         <div class="container-imagem-label">
             <h3>HABILIDADES</h3>
             <button onclick="atacar()" id="atacar" style="border-radius: 5px;">Atacar</button>
+            <audio src="audio/SOCO 1.mp3" id="audioSoco">
         </div>
 
         <!-- Botões ATRIBUTOS -->
@@ -88,7 +101,7 @@
         <p>
             <!-- Guerreiro -->
             <div class="container-imagem-label">
-                <img src="imagens/guerreiroIcone.jpg" alt="Guerreiro" style="border-radius: 10px;" width="200" height="200">
+                <img src="imagens/guerreiroIcone.jpg" alt="Guerreiro" style="border-radius: 10px;" width="200" height="200" id="imgG">
                 <label id="displayDanoJ">Dano do Jogador</label>
             </div>
 
@@ -99,7 +112,7 @@
 
             <!-- Goblin -->
             <div class="container-imagem-label">
-                <img src="imagens/goblinIcone.png" alt="Goblin" style="border-radius: 10px;" width="200" height="200">
+                <img src="imagens/goblinIcone.png" alt="Goblin" style="border-radius: 10px;" width="200" height="200" id="imgGO">
                 <label id="displayDanoG">Dano do Goblin</label>
             </div>
         </p>
@@ -107,6 +120,8 @@
 
     <script>
         function atacar() {
+
+            //Desativa botão
             var BotaoAtaque = document.getElementById("atacar")
             BotaoAtaque.disabled = true;
 
@@ -121,8 +136,16 @@
                     document.getElementById("ANUNCIO").innerHTML = "Goblin: dano crítico!\nAtaque do Goblin x2."
                 }
 
+
+            setTimeout(function() {
+                tremer();
+            }, 2200)
+
             // Aguarda 3 segundos antes de continuar
             setTimeout(function () {
+                var audioSoco = document.getElementById("audioSoco");
+                audioSoco.play();
+
                 // Limpa o anúncio
                 document.getElementById("ANUNCIO").innerText = "";
 
@@ -210,6 +233,19 @@
         function aleatorio() {
             let r = Math.floor(Math.random() * 10) + 1;
             return r;
+        }
+    
+        function tremer() {
+            var imgG = document.getElementById("imgG")
+            var imgGO = document.getElementById("imgGO")
+
+            imgG.classList.add("tremer-ativo");
+            imgGO.classList.add("tremer-ativo");
+
+            setTimeout(function() {
+                imgG.classList.remove("tremer-ativo");
+                imgGO.classList.remove("tremer-ativo");
+            }, 500)
         }
     </script>
 </body>

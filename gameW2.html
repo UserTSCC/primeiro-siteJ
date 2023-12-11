@@ -24,6 +24,31 @@
             align-items: center;
             margin: 10px;
         }
+
+        /* TREMER */
+        @keyframes shake {
+            0% {transform: translateX(0); }
+            25% {transform: translateX(-10px) rotate(-5deg); }
+            50% {transform: translateX(10px) rotate(5deg); }
+            75% {transform: translateX(-10px) rotate(-5deg); }
+            100% {transform: translateX(0); }
+        }
+        .tremer-ativo {
+            animation: shake 0.5s ease-in-out;
+        }
+
+
+        /* BOLADEFOGO */
+        @keyframes bolaDeFogo {
+            0% { transform: scale(1); opacity: 1;}
+            50% { transform: scale(1.15); opacity: 0.75; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        .BDF-ativa {
+            animation: bolaDeFogo 1s ease-in-out;
+            filter:brightness(250%);
+        }
+
     </style>
 </head>
 
@@ -49,7 +74,7 @@
 
 
     <!-- Atributos e Botões -->
-    <h1 style="text-align: center; color: tomato;">COMBATE.</h1>
+    <h1 style="text-align: center; color: tomato;">COMBATE</h1>
     <br>
     <hr>
     <div id="explicacao">
@@ -71,6 +96,9 @@
             <h3>HABILIDADES</h3>
             <button onclick="golpear()" id="golpear" style="border-radius: 5px;">Golpear</button>
             <button onclick="bolaFogo()" id="bolaFogo" style="border-radius: 5px;">Bola de Fogo (10 MANA)</button>
+
+            <audio src="audio/Soco2.wav" id="audioGolpear">
+            <audio src="audio/Magia1.wav" id="audioFogo">
         </div>
 
         <!-- Botões ATRIBUTOS -->
@@ -93,7 +121,7 @@
         <p>
             <!-- Mago -->
             <div class="container-imagem-label">
-                <img src="imagens/magoIcone.jpg" alt="Mago" style="border-radius: 10px;" width="200" height="200">
+                <img src="imagens/magoIcone.jpg" alt="Mago" style="border-radius: 10px;" width="200" height="200" id="imgM">
                 <label id="displayDanoJ">Dano do Jogador</label>
             </div>
 
@@ -105,7 +133,7 @@
 
             <!-- Goblin -->
             <div class="container-imagem-label">
-                <img src="imagens/goblinIcone.png" alt="Goblin" style="border-radius: 10px;" width="200" height="200">
+                <img src="imagens/goblinIcone.png" alt="Goblin" style="border-radius: 10px;" width="200" height="200" id="imgGO">
                 <label id="displayDanoG">Dano do Goblin</label>
             </div>
         </p>
@@ -114,8 +142,11 @@
 
     <!-- Funções Gerais -->
     <script>
+
         //Funções BATALHA
         function golpear() {
+
+            //Desativando Botões
             var BotaoFogo = document.getElementById("bolaFogo")
             BotaoFogo.disabled = true
             var BotaoGolpear = document.getElementById("golpear")
@@ -132,8 +163,20 @@
                     document.getElementById("ANUNCIO").innerHTML = "Goblin: dano crítico!\nAtaque do Goblin x2."
                 }
 
+
+            //Treme as imagens
+            setTimeout(function() {
+                tremer()
+            }, 2200)
+
+
             // Aguarda 3 segundos antes de continuar
             setTimeout(function () {
+
+                //Toca os áudios
+                var audioGolpear = document.getElementById("audioGolpear");
+                audioGolpear.play();
+
                 // Limpa o anúncio
                 document.getElementById("ANUNCIO").innerText = "";
 
@@ -176,7 +219,10 @@
 
         function bolaFogo() {
             if (ManaJBatalha >= 10) {
+
+                //Consome mana
                 ManaJBatalha -= 10
+
 
                 //Desativa Botões
                 var BotaoFogo = document.getElementById("bolaFogo")
@@ -204,11 +250,22 @@
                         document.getElementById("ANUNCIO").innerHTML = `Goblin: dano crítico!\nAtaque do Goblin x2.`;
                     }
 
+
+                //Anima a imagem
+                setTimeout(function () {
+                    BDF()
+
+                    var audioFogo = document.getElementById("audioFogo");
+                    audioFogo.play();
+                }, 2000)
+
+
                 // Aguarda 3 segundos antes de continuar
                 setTimeout(function () {
                     // Limpa o anúncio
                     document.getElementById("ANUNCIO").innerHTML = "";
                     document.getElementById("ANUNCIO2").innerHTML = "";
+
 
                     // Simulação de um turno de combate
                     VidaJBatalha -= AtaqueGoblin;
@@ -258,6 +315,7 @@
             }
         }
 
+
         //Funções ATRIBUTOS
         function aumentarAtaque() {
             if (PA > 0) {
@@ -299,6 +357,28 @@
         function aleatorio() {
             let r = Math.floor(Math.random() * 10) + 1;
             return r;
+        }
+    
+        function tremer () {
+            var imgM = document.getElementById("imgM")
+            var imgGO = document.getElementById("imgGO")
+
+            imgM.classList.add("tremer-ativo")
+            imgGO.classList.add("tremer-ativo")
+
+            setTimeout(function() {
+                imgM.classList.remove("tremer-ativo");
+                imgGO.classList.remove("tremer-ativo");
+            }, 500)
+        }
+    
+        function BDF() {
+            var imgG = document.getElementById("imgM")
+            imgG.classList.add("BDF-ativa");
+
+            setTimeout (function() {
+                imgG.classList.remove("BDF-ativa");
+            }, 1000)
         }
     </script>
 </body>
